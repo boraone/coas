@@ -394,9 +394,7 @@ class TCU implements EndpointFactory
             'females' => $females
         ];
 
-        $this->setBaseUrl('http://api.tcu.go.tz/dashboard/');
-
-        return $this->sendRequest(__FUNCTION__);
+        return $this->setBaseUrl('http://api.tcu.go.tz/dashboard/')->sendRequest(__FUNCTION__);
     }
 
 
@@ -499,30 +497,4 @@ class TCU implements EndpointFactory
         return new SimpleXMLElement($content);
     }
 
-    /**
-     * @param $url
-     * @return array|string
-     */
-    public function xmlToJson($url)
-    {
-        $fileContents = str_replace(array("\n", "\r", "\t"), '', $url);
-        $fileContents = trim(str_replace('"', "'", $fileContents));
-        $simpleXml = simplexml_load_string($fileContents);
-        $json = json_encode($simpleXml);
-
-        return (object)(array)$json;
-    }
-
-    /**
-     * @param array $array
-     * @return array
-     */
-    function flatten(array $array)
-    {
-        $return = array();
-        array_walk_recursive($array, function ($a) use (&$return) {
-            $return[] = $a;
-        });
-        return $return;
-    }
 }
