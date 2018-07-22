@@ -13,7 +13,7 @@ use SimpleXMLElement;
  *
  * @version    1.0.0
  * @package    coas/tcu
- * @copyright  Copyright (c) 2018 - 2019 Boraone (https://coas.co.tz)
+ * @copyright  Copyright (c) 2018 - 2019 Boraone (http://coas.co.tz)
  * @author     Amani Mawalla <amawalla@boraone.com>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
