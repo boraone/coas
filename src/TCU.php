@@ -29,8 +29,6 @@ class TCU implements EndpointFactory
 
     protected $baseurl = 'http://api.tcu.go.tz/applicants/';
 
-    protected $client;
-
     protected $inJson = true;
 
     protected $requestParameters;
@@ -470,9 +468,9 @@ class TCU implements EndpointFactory
 
         $url = !empty($url) ? $url : $url;
 
-        $this->client = new Client(['base_uri' => $this->baseurl]);
+        $client = new Client(['base_uri' => $this->baseurl]);
 
-        $response = $this->client->$method($url, [
+        $response = $client->$method($url, [
             'headers' => [
                 'Accept' => 'application/xml',
             ],
