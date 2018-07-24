@@ -5,7 +5,7 @@ Using composer
 
     composer require coas/tcu  
 
-Use Coas/TCU/TCU;
+    Use Coas/TCU/TCU;
 
     $tcu = (new TCU(username, token, instutionCode));
 
@@ -28,4 +28,4 @@ Response :
     $description = $response->RESPONSE->RESPONSEPARAMETERS->STATUS_DESCRIPTION;
 
 Methods:
-All methods as defined in the original TCU document API;
+All methods as defined in the original TCU document API
