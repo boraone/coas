@@ -1,4 +1,4 @@
-# Coas TCU integration
+# Simple wrapper to work with TCU api
 How to use;
 
 Using composer 
