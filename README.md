@@ -5,6 +5,8 @@ Using composer
 
     composer require coas/tcu  
 
+Using the package
+
     Use Coas/TCU/TCU;
 
     $tcu = (new TCU(username, token, instutionCode));
