@@ -11,7 +11,7 @@ Using the package
 
     $tcu = (new TCU(username, token, instutionCode));
 
-    $response = $tcu-> checkStatus(‘indexNumber’); // Returns XML response as a json object 
+    $response = $tcu->checkStatus(‘indexNumber’); // Returns XML response as a json object 
 
 if you wish to return the original XML
 
