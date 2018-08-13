@@ -1,7 +1,7 @@
 # Simple wrapper to work with TCU api
 How to use;
 
-Using composer 
+Install through composer 
 
     composer require coas/tcu  
 
