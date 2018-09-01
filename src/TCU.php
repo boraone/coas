@@ -355,7 +355,8 @@ class TCU implements EndpointFactory
             'Programme' => $programme,
         ];
 
-        return $this->sendRequest(__FUNCTION__);
+        return $this->setBaseUrl('http://api.tcu.go.tz/admission/')
+            ->sendRequest(__FUNCTION__);
     }
 
     /**
