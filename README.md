@@ -9,8 +9,14 @@ Using the package
 
     Use Coas/TCU/TCU;
 
-    $tcu = (new TCU(username, token, instutionCode));
+    $tcu = new TCU(username, token, instutionCode, inJson);
+    
+    username ( string ) = TCU username
+    token ( string ) = TCU secret token credential
+    instutionCode ( string ) = Institute code or null ( defaults to username )
+    inJson ( bool ) = Tells to return results as a json object, set to false return the original xml response
 
+    //Example
     $response = $tcu->checkStatus(‘indexNumber’); // Returns XML response as a json object 
 
 if you wish to return the original XML
@@ -19,7 +25,7 @@ if you wish to return the original XML
 
 or pass the fourth parameter as false
 
-    $tcu = (new TCU(username, token, null, false));
+    $tcu = new TCU(username, token, null, false);
 
 Response 
 
