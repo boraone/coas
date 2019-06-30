@@ -34,13 +34,14 @@ interface EndpointFactory
      * @param $indexF6
      * @param $programmes
      * @param $admitted
+     * @param $status
+     * @param $dob
      * @param null $phone
      * @param null $email
-     * @param $status
      * @param null $reason
      * @return mixed
      */
-    public function submitProgramme($indexF4, $indexF6, $programmes,$admitted,$status ,$phone = null, $email = null, $reason = null);
+    public function submitProgramme($indexF4, $indexF6, $programmes,$admitted,$status,$dob,$phone = null, $email = null, $reason = null);
 
     /**
      * PUSH to TCU special confirmation code entered by applicants with multiple admissions
@@ -69,6 +70,7 @@ interface EndpointFactory
      * @param $programmes
      * @param $accepted_programme
      * @param $status
+     * @param $dob
      * @param null $phone
      * @param null $email
      * @param null $reason
@@ -76,7 +78,7 @@ interface EndpointFactory
      * @param null $otherformSix
      * @return mixed
      */
-    public function resubmit($indexF4, $indexF6, $programmes, $accepted_programme, $status , $phone = null, $email = null, $reason = null, $otherformFour = null, $otherformSix = null);
+    public function resubmit($indexF4, $indexF6, $programmes, $accepted_programme, $status ,$dob, $phone = null, $email = null, $reason = null, $otherformFour = null, $otherformSix = null);
 
     /**
      * Fetch a list of all applicants in a given programme
