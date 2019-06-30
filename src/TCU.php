@@ -39,6 +39,11 @@ class TCU implements EndpointFactory
 
     protected $baseurl = self::APPLICANT_URI;
 
+    public $responseBody;
+
+    public $generatedXMLBody;
+
+
     /**
      * TCU constructor.
      * @param $username
@@ -550,6 +555,7 @@ class TCU implements EndpointFactory
         return count($array) !== count($array, COUNT_RECURSIVE);
     }
 
+
     /**
      *
      * Sends the request to TCU
@@ -570,6 +576,7 @@ class TCU implements EndpointFactory
         if ($method && !in_array($method, ['GET', 'POST', 'get', 'post'])) {
 
             throw new ErrorTCUHandlerException('Invalid/Unknown "' . $method . '" HTTP method defined');
+
         } elseif (empty($method)) {
 
             $method = 'POST';
@@ -585,15 +592,37 @@ class TCU implements EndpointFactory
             'headers' => [
                 'Accept' => 'application/xml',
             ],
-            'body' => $this->generateRequestBody()
+            'body' => $this->generatedXMLBody = $this->generateRequestBody()
         ]);
 
-        if ($response->getStatusCode() == 200 && $json) {
+        $this->inJson($json);
+
+        //$this->responseBody = $response;
+
+        if ($response->getStatusCode() == 200 && $this->inJson) {
 
             return $this->parseResponse($response->getBody()->getContents());
         }
 
         return $response ? $response->getBody()->getContents() : null;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponse()
+    {
+
+        return $this->responseBody;
+    }
+
+    /**
+     * @param $string
+     */
+    public function setResponseBody($string)
+    {
+
+        $this->responseBody = $string;
     }
 
 
@@ -603,7 +632,6 @@ class TCU implements EndpointFactory
      */
     protected function parseResponse($content)
     {
-        return new SimpleXMLElement($content);
+        return simplexml_load_string($content);
     }
-
 }
