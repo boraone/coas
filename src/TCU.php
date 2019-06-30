@@ -141,7 +141,7 @@ class TCU implements EndpointFactory
     {
         if (is_string($indexNumber)) {
 
-            $this->requestParameters = ['requestParameters' => ['f4indexno' => $indexNumber]];
+            $this->requestParameters = ['RequestParameters' => ['f4indexno' => $indexNumber]];
 
         } elseif (is_array($indexNumber)) {
 
@@ -149,7 +149,7 @@ class TCU implements EndpointFactory
 
                 $data[] = ['f4indexno' => $item];
             }
-            $this->requestParameters = ['requestParameters' => $data];
+            $this->requestParameters = ['RequestParameters' => $data];
         }
 
         return $this->sendRequest(__FUNCTION__);
@@ -170,12 +170,12 @@ class TCU implements EndpointFactory
     {
 
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
+           // 'institutionCode' => $this->institutionCode,
             'Category' => $category,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
-            'Other_f4indexno' => is_array($formFour) ? implode(",", $formFour) : $formFour,
-            'Other_f6indexno' => is_array($formSix) ? implode(",", $formSix) : $formSix,
+            'Otherf4indexno' => is_array($formFour) ? implode(",", $formFour) : $formFour,
+            'Otherf6indexno' => is_array($formSix) ? implode(",", $formSix) : $formSix,
         ];
 
         return $this->sendRequest(__FUNCTION__);
@@ -211,24 +211,32 @@ class TCU implements EndpointFactory
      * @param $programmes
      * @param $admitted
      * @param $status
+     * @param $dob
      * @param null $phone
      * @param null $email
      * @param null $reason
+     * @param null $otherPhone
+     * @param null $nationality
+     * @param null $disability
      * @return mixed
      * @throws ErrorTCUHandlerException
      */
-    public function submitProgramme($indexF4, $indexF6, $programmes, $admitted, $status, $phone = null, $email = null, $reason = null)
+    public function submitProgramme($indexF4, $indexF6, $programmes, $admitted, $status, $dob, $phone = null, $email = null, $reason = null,$nationality = null, $disability = null, $otherPhone = null)
     {
         $this->requestParameters = [
             'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
-            'Selectedprogrammes' => $programmes,
-            'Mobilenumber' => $phone,
-            'Emailaddress' => $email,
-            'Admissionstatus' => $status,
-            'Programme_admitted' => $admitted,
-            'reason' => $reason,
+            'SelectedProgrammes' => $programmes,
+            'MobileNumber' => $phone,
+            'OtherMobileNumber' => $otherPhone ?? '',
+            'EmailAddress' => $email,
+            'AdmissionStatus' => $status,
+            'ProgrammeAdmitted' => $admitted,
+            'Reason' => $reason,
+            'Nationality' => $nationality ?? 'Tanzanian',
+            'Impairment' => $disability ?? 'None',
+            'DateOfBirth' => $dob
         ];
 
 
@@ -303,15 +311,18 @@ class TCU implements EndpointFactory
      * @param $programmes
      * @param $accepted_programme
      * @param $status
+     * @param $dob
      * @param null $phone
      * @param null $email
      * @param null $reason
+     * @param null $nationality
+     * @param null $disability
      * @param null $otherformFour
      * @param null $otherformSix
      * @return mixed
      * @throws ErrorTCUHandlerException
      */
-    public function resubmit($indexF4, $indexF6, $programmes, $accepted_programme, $status, $phone = null, $email = null, $reason = null, $otherformFour = null, $otherformSix = null)
+    public function resubmit($indexF4, $indexF6, $programmes, $accepted_programme, $status, $dob ,$phone = null, $email = null, $reason = null,$nationality= null,$disability = null, $otherformFour = null, $otherformSix = null)
     {
         $this->requestParameters = [
             'institutionCode' => $this->institutionCode,
@@ -326,7 +337,7 @@ class TCU implements EndpointFactory
             'Reason' => $reason,
             'Nationality' => $nationality ?? 'Tanzanian',
             'Impairment' => $disability ?? 'None',
-            'DateOfBirth' => $dateOfBirth ?? null,
+            'DateOfBirth' => $dob ?? null,
             'Other_f4indexno' => is_array($otherformFour) ? implode(",", $otherformFour) : $otherformFour,
             'Other_f6indexno' => is_array($otherformSix) ? implode(",", $otherformSix) : $otherformSix,
         ];
@@ -520,7 +531,7 @@ class TCU implements EndpointFactory
      * @param bool $multiple
      * @return string
      */
-    protected function generateRequestBody($data = [], $node = 'requestParameters')
+    protected function generateRequestBody($data = [], $node = 'RequestParameters')
     {
         $data = $data ? $data : $this->requestParameters;
 
@@ -536,7 +547,7 @@ class TCU implements EndpointFactory
         return ArrayToXml::convert(array_merge_recursive([
             'UsernameToken' =>
                 [
-                    'username' => $this->username,
+                    'Username' => $this->username,
                     'SessionToken' => $this->token,
                 ]
         ], $request), 'Request');
