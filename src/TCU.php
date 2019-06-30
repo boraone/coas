@@ -27,11 +27,17 @@ class TCU implements EndpointFactory
 
     protected $institutionCode;
 
-    protected $baseurl = 'http://api.tcu.go.tz/applicants/';
-
     protected $inJson = true;
 
+    const ADMISSION_URI = 'http://api.tcu.go.tz/admission/';
+
+    const APPLICANT_URI = 'http://api.tcu.go.tz/applicants/';
+
+    const DASHBOARD_URI = 'http://api.tcu.go.tz/dashboard/';
+
     protected $requestParameters;
+
+    protected $baseurl = self::APPLICANT_URI;
 
     /**
      * TCU constructor.
@@ -263,6 +269,27 @@ class TCU implements EndpointFactory
         return $this->sendRequest(__FUNCTION__);
     }
 
+
+    /**
+     * PUSH to TCU applicants who chose to reject their admission
+     *
+     * @param $indexF4
+     * @param $code
+     * @param string $action
+     * @return mixed
+     * @throws ErrorTCUHandlerException
+     */
+    public function unconfirm($indexF4, $code)
+    {
+        $this->requestParameters = [
+            'institutionCode' => $this->institutionCode,
+            'f4indexno' => $indexF4,
+            'ConfirmationCode' => $code,
+        ];
+
+        return $this->sendRequest(__FUNCTION__);
+    }
+
     /**
      * PUSH applicants whose details have changed since last submission
      *
@@ -285,12 +312,16 @@ class TCU implements EndpointFactory
             'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
-            'Selectedprogrammes' => $programmes,
-            'Mobilenumber' => $phone,
-            'Emailaddress' => $email,
-            'Admissionstatus' => $status,
-            'Programme_admitted' => $accepted_programme,
-            'reason' => $reason,
+            'SelectedProgrammes' => $programmes,
+            'MobileNumber' => $phone,
+            'EmailAddress' => $email,
+            'AdmissionStatus' => $status,
+            'ProgrammeAdmitted' => $accepted_programme,
+            'Category' => 'Eligible',
+            'Reason' => $reason,
+            'Nationality' => $nationality ?? 'Tanzanian',
+            'Impairment' => $disability ?? 'None',
+            'DateOfBirth' => $dateOfBirth ?? null,
             'Other_f4indexno' => is_array($otherformFour) ? implode(",", $otherformFour) : $otherformFour,
             'Other_f6indexno' => is_array($otherformSix) ? implode(",", $otherformSix) : $otherformSix,
         ];
@@ -303,6 +334,84 @@ class TCU implements EndpointFactory
         });
 
         return $this->sendRequest(__FUNCTION__);
+    }
+
+    /**
+     * @param $indexF4
+     * @param $indexF6
+     * @param $current_programme
+     * @param $previous_programme
+     * @return SimpleXMLElement|string
+     * @throws ErrorTCUHandlerException
+     */
+    public function submitInterInstitutionalTransfers($indexF4, $indexF6, $current_programme, $previous_programme) {
+
+        $this->requestParameters = [
+            'institutionCode' => $this->institutionCode,
+            'f4indexno' => $indexF4,
+            'f6indexno' => $indexF6,
+            'CurrentProgrammeCode' => $current_programme,
+            'PreviousProgrammeCode' => $previous_programme,
+        ];
+
+        return $this->setBaseUrl(self::ADMISSION_URI)
+            ->sendRequest(__FUNCTION__);
+    }
+
+
+    /**
+     * @param $indexF4
+     * @param $indexF6
+     * @param $current_programme
+     * @param $previous_programme
+     * @return SimpleXMLElement|string
+     * @throws ErrorTCUHandlerException
+     */
+    public function submitInternalTransfers($indexF4, $indexF6, $current_programme, $previous_programme) {
+
+        $this->requestParameters = [
+            'institutionCode' => $this->institutionCode,
+            'f4indexno' => $indexF4,
+            'f6indexno' => $indexF6,
+            'CurrentProgrammeCode' => $current_programme,
+            'PreviousProgrammeCode' => $previous_programme,
+        ];
+
+        return $this->setBaseUrl(self::ADMISSION_URI)
+            ->sendRequest(__FUNCTION__);
+    }
+
+    /**
+     * @param $programme
+     * @return SimpleXMLElement|string
+     * @throws ErrorTCUHandlerException
+     */
+    public function getApplicantVerificationStatus($programme) {
+
+        $this->requestParameters = [
+            'institutionCode' => $this->institutionCode,
+            'ProgrammeCode' => $programme,
+        ];
+
+        return $this->sendRequest(__FUNCTION__);
+    }
+
+    /**
+     * @param $indexNumber
+     * @param $phone
+     * @return SimpleXMLElement|string
+     * @throws ErrorTCUHandlerException
+     */
+    public function requestConfirmationCode($indexNumber, $phone) {
+
+
+        $this->requestParameters = [
+            'f4Index' => $indexNumber,
+            'MobileNumber' => $phone,
+        ];
+
+        return $this->setBaseUrl(self::ADMISSION_URI)
+            ->sendRequest(__FUNCTION__);
     }
 
     /**
@@ -355,7 +464,8 @@ class TCU implements EndpointFactory
             'Programme' => $programme,
         ];
 
-        return $this->setBaseUrl('http://api.tcu.go.tz/admission/')
+        return $this
+            ->setBaseUrl(self::ADMISSION_URI)
             ->sendRequest(__FUNCTION__);
     }
 
@@ -393,7 +503,7 @@ class TCU implements EndpointFactory
             'females' => $females
         ];
 
-        return $this->setBaseUrl('http://api.tcu.go.tz/dashboard/')->sendRequest(__FUNCTION__);
+        return $this->setBaseUrl(self::DASHBOARD_URI)->sendRequest(__FUNCTION__);
     }
 
 
