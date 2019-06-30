@@ -170,7 +170,6 @@ class TCU implements EndpointFactory
     {
 
         $this->requestParameters = [
-           // 'institutionCode' => $this->institutionCode,
             'Category' => $category,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
@@ -224,7 +223,6 @@ class TCU implements EndpointFactory
     public function submitProgramme($indexF4, $indexF6, $programmes, $admitted, $status, $dob, $phone = null, $email = null, $reason = null,$nationality = null, $disability = null, $otherPhone = null)
     {
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
             'SelectedProgrammes' => $programmes,
@@ -254,7 +252,6 @@ class TCU implements EndpointFactory
     public function confirm($indexF4, $code)
     {
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'ConfirmationCode' => $code,
         ];
@@ -274,7 +271,6 @@ class TCU implements EndpointFactory
     public function reject($indexF4, $code, $action = 'REJECT')
     {
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'ConfirmationCode' => $code,
         ];
@@ -325,7 +321,6 @@ class TCU implements EndpointFactory
     public function resubmit($indexF4, $indexF6, $programmes, $accepted_programme, $status, $dob ,$phone = null, $email = null, $reason = null,$nationality= null,$disability = null, $otherformFour = null, $otherformSix = null)
     {
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
             'SelectedProgrammes' => $programmes,
@@ -363,7 +358,6 @@ class TCU implements EndpointFactory
     public function submitInterInstitutionalTransfers($indexF4, $indexF6, $current_programme, $previous_programme) {
 
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
             'CurrentProgrammeCode' => $current_programme,
@@ -386,7 +380,6 @@ class TCU implements EndpointFactory
     public function submitInternalTransfers($indexF4, $indexF6, $current_programme, $previous_programme) {
 
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'f4indexno' => $indexF4,
             'f6indexno' => $indexF6,
             'CurrentProgrammeCode' => $current_programme,
@@ -405,7 +398,6 @@ class TCU implements EndpointFactory
     public function getApplicantVerificationStatus($programme) {
 
         $this->requestParameters = [
-            'institutionCode' => $this->institutionCode,
             'ProgrammeCode' => $programme,
         ];
 
@@ -419,7 +411,6 @@ class TCU implements EndpointFactory
      * @throws ErrorTCUHandlerException
      */
     public function requestConfirmationCode($indexNumber, $phone) {
-
 
         $this->requestParameters = [
             'f4Index' => $indexNumber,
@@ -440,7 +431,6 @@ class TCU implements EndpointFactory
     public function getStatus($programme)
     {
         $this->requestParameters = [
-            'InstitutionCode' => $this->institutionCode,
             'Programme' => $programme,
         ];
 
@@ -457,8 +447,6 @@ class TCU implements EndpointFactory
     public function getConfirmed($programme)
     {
         $this->requestParameters = [
-
-            'InstitutionCode' => $this->institutionCode,
             'Programme' => $programme,
         ];
 
@@ -475,8 +463,6 @@ class TCU implements EndpointFactory
     public function getAdmitted($programme)
     {
         $this->requestParameters = [
-
-            'InstitutionCode' => $this->institutionCode,
             'Programme' => $programme,
         ];
 
@@ -493,11 +479,6 @@ class TCU implements EndpointFactory
      */
     public function getProgrammes()
     {
-        $this->requestParameters = [
-
-            'institutioncode' => $this->institutionCode,
-        ];
-
         return $this->sendRequest(__FUNCTION__);
     }
 
@@ -513,10 +494,9 @@ class TCU implements EndpointFactory
     public function populate($programme, $males, $females)
     {
         $this->requestParameters = [
-            'institutioncode' => $this->institutionCode,
             'Programme' => $programme,
-            'males' => $males,
-            'females' => $females
+            'Males' => $males,
+            'Females' => $females
         ];
 
         return $this->setBaseUrl(self::DASHBOARD_URI)->sendRequest(__FUNCTION__);
