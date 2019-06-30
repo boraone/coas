@@ -621,7 +621,6 @@ class TCU implements EndpointFactory
      */
     public function setResponseBody($string)
     {
-
         $this->responseBody = $string;
     }
 
