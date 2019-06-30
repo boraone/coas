@@ -1,4 +1,4 @@
-# Simple wrapper to work with TCU api
+# Simple PHP wrapper to work with TCU api
 How to use;
 
 Install through composer 
