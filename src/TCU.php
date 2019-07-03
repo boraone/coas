@@ -30,7 +30,7 @@ class TCU implements EndpointFactory
     protected $inJson = true;
 
     const ADMISSION_URI = 'http://197.149.178.22/admission/';
-    
+
     const APPLICANT_URI = 'http://api.tcu.go.tz/applicants/';
 
     const DASHBOARD_URI = 'http://197.149.178.22/dashboard/';
@@ -42,6 +42,12 @@ class TCU implements EndpointFactory
     public $responseBody;
 
     public $generatedXMLBody;
+
+    protected $admissionURL;
+
+    protected $applicantURL;
+
+    protected $dashboardURL;
 
 
     /**
@@ -60,6 +66,12 @@ class TCU implements EndpointFactory
         $this->token = $token;
 
         $this->institutionCode = !empty($institution_code) ? $institution_code : $this->username;
+
+        $this->admissionURL = self::ADMISSION_URI;
+
+        $this->applicantURL = self::APPLICANT_URI;
+
+        $this->dashboardURL = self::DASHBOARD_URI;
     }
 
     /**
@@ -117,6 +129,60 @@ class TCU implements EndpointFactory
 
         return $this;
     }
+
+    /**
+     * @param $string
+     * @return $this
+     * @throws ErrorTCUHandlerException
+     */
+    public function setDashboardURL($string) {
+
+        if(filter_var($string, FILTER_VALIDATE_URL) == false) {
+
+            throw new ErrorTCUHandlerException('Invalid URL provided');
+        }
+
+        $this->dashboardURL = $string;
+
+        return $this;
+
+    }
+
+    /**
+     * @param $string
+     * @return $this
+     * @throws ErrorTCUHandlerException
+     */
+    public function setAdmissionURL($string) {
+
+        if(filter_var($string, FILTER_VALIDATE_URL) == false) {
+
+            throw new ErrorTCUHandlerException('Invalid URL provided');
+        }
+
+        $this->admissionURL = $string;
+
+        return $this;
+
+    }
+
+    /**
+     * @param $string
+     * @return $this
+     * @throws ErrorTCUHandlerException
+     */
+    public function setApplicantURL($string) {
+
+        if(filter_var($string, FILTER_VALIDATE_URL) == false) {
+
+            throw new ErrorTCUHandlerException('Invalid URL provided');
+        }
+
+        $this->applicantURL = $string;
+
+        return $this;
+    }
+
 
     /**
      * @param bool $json
@@ -364,7 +430,7 @@ class TCU implements EndpointFactory
             'PreviousProgrammeCode' => $previous_programme,
         ];
 
-        return $this->setBaseUrl(self::ADMISSION_URI)
+        return $this->setBaseUrl($this->admissionURL)
             ->sendRequest(__FUNCTION__);
     }
 
@@ -386,7 +452,7 @@ class TCU implements EndpointFactory
             'PreviousProgrammeCode' => $previous_programme,
         ];
 
-        return $this->setBaseUrl(self::ADMISSION_URI)
+        return $this->setBaseUrl($this->admissionURL)
             ->sendRequest(__FUNCTION__);
     }
 
@@ -417,7 +483,7 @@ class TCU implements EndpointFactory
             'MobileNumber' => $phone,
         ];
 
-        return $this->setBaseUrl(self::ADMISSION_URI)
+        return $this->setBaseUrl($this->admissionURL)
             ->sendRequest(__FUNCTION__);
     }
 
@@ -467,7 +533,7 @@ class TCU implements EndpointFactory
         ];
 
         return $this
-            ->setBaseUrl(self::ADMISSION_URI)
+            ->setBaseUrl($this->admissionURL)
             ->sendRequest(__FUNCTION__);
     }
 
@@ -499,7 +565,7 @@ class TCU implements EndpointFactory
             'Females' => $females
         ];
 
-        return $this->setBaseUrl(self::DASHBOARD_URI)->sendRequest(__FUNCTION__);
+        return $this->setBaseUrl($this->dashboardURL)->sendRequest(__FUNCTION__);
     }
 
 
