@@ -30,8 +30,8 @@ class TCU implements EndpointFactory
     protected $inJson = true;
 
     const ADMISSION_URI = 'http://197.149.178.22/admission/';
-
-    const APPLICANT_URI = 'http://197.149.178.22/applicants/';
+    
+    const APPLICANT_URI = 'http://api.tcu.go.tz/applicants/';
 
     const DASHBOARD_URI = 'http://197.149.178.22/dashboard/';
 
